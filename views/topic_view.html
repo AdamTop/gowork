@@ -1,0 +1,18 @@
+{{template "header" .}}
+	<header id="top" class="navbar navbar-static-top bs-docs-nav" role="banner">
+			{{template "navbar" .}}
+	</header>
+	<body>
+		<div class="container">
+			<div class="page-header">
+				<h1>{{.Topic.Title}}</h1>
+				<h6 class="text-muted">文章发表 {{.Topic .Created}}</h6>
+				<p>
+					{{.Topic.Content}}
+				</p>	
+			</div>
+		</div>
+	</body>
+	<footer>
+	</footer>
+</html>

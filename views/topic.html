@@ -1,0 +1,37 @@
+{{template "header" .}}
+	<header id="top" class="navbar navbar-static-top bs-docs-nav" role="banner">
+			{{template "navbar" .}}
+	</header>
+	<body>
+		<div class="container">
+		<h1>文章列表</h1>
+		<a href="/topic/add" class="btn btn-default">添加文章</a>
+			<div class="table-responsive">
+			  <table class="table">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>文章名称</th>
+						<th>最后更新</th>
+						<th>浏览</th>
+						<th>回复数量</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+					{{range .Topics}}
+						<th>{{.Id}}</th>
+						<th>{{.Title}}</th>
+						<th>{{.Updated}}</th>
+						<th>{{.Views}}</th>
+						<th>{{.ReplyCount}}</th>
+					{{end}}
+					</tr>
+				</tbody>
+			 </table>
+			</div>
+		</div>
+	</body>
+	<footer>
+	</footer>
+</html>

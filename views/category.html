@@ -1,0 +1,43 @@
+{{template "header" .}}
+	<header id="top" class="navbar navbar-static-top bs-docs-nav" role="banner">
+			{{template "navbar" .}}
+	</header>
+	<body>
+		<div class="container">
+			<form method="get" action="/category">
+			  <div class="form-group">
+			    <label>分类名称</label>
+			    <input type="text" name="catename" value="" class="form-control"  placeholder="add category">
+			  </div>
+				<input type="hidden" name="action" value="add">
+			  <button type="submit" class="btn btn-default">添加</button>
+			</form>
+			<div class="table-responsive">
+			  <table class="table">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>名称</th>
+						<th>文章数</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+					{{range .Categories}}
+						<th>{{.Id}}</th>
+						<th>{{.Title}}</th>
+						<th>{{.TopicCount}}</th>
+						<th>
+							<a href="/category?action=del&id={{.Id}}">删除</a>
+						</th>
+					{{end}}
+					</tr>
+				</tbody>
+			 </table>
+			</div>
+		</div>
+	</body>
+	<footer>
+	</footer>
+</html>
