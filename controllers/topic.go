@@ -53,28 +53,20 @@ func (this *TopicController) Post() {
 
 //获取文章显示id 数据
 func (this *TopicController) Views() {
+	var err error
 	this.Data["titleString"] = "Article View- My Golang Blog"
 	if !checkAccount(this.Ctx) {
 		this.Redirect("/login", 302)
 		return
 	}
 	this.Data["Islogin"] = checkAccount(this.Ctx)
-	//fmt.Println(this.Ctx.Input.Bind(&id, "id"))
-	var id string
-	var vid string
-	var err error
-	vid, err = this.Ctx.Input.Bind(&id, "id")
+	//this.Ctx.WriteString(this.Ctx.Input.Param("0"))
+	this.Data["Topics"], err = models.GetTopic(this.Ctx.Input.Param("0"))
+
 	if err != nil {
-		this.Error(err)
+		beego.Error(err)
 		this.Redirect("/topic", 302)
 		return
 	}
-	/*
-		this.Data["Topic"] = models.GetTopic(this.Ctx.Input.Params("0"))
-		if err != nil {
-			this.Error(err)
-			this.Redirect("/topic", 302)
-			return
-		}*/
 	this.TplName = "topic_view.html"
 }
