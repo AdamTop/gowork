@@ -144,3 +144,61 @@ func GetTopic(sid string) (*BeeTopic, error) {
 	}
 	return topic, err
 }
+
+//编辑文章
+func EditTopics(sid string) (*BeeTopic, error) {
+	tid, err := strconv.ParseInt(sid, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+	o := orm.NewOrm()
+	topic := new(BeeTopic)
+	qs := o.QueryTable("bee_topic")
+	err = qs.Filter("id", tid).One(topic)
+	if err != nil {
+		return nil, err
+	}
+	return topic, err
+}
+
+//修改文章
+func UpdataTopic(sid, title, content string) (*BeeTopic, error) {
+	tid, err := strconv.ParseInt(sid, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+	o := orm.NewOrm()
+	topic := new(BeeTopic)
+	err = o.Read(&BeeTopic{Id: tid})
+	if err != nil {
+		return nil, err
+	} else {
+		//		topic := &BeeTopic{
+		//			Id:        tid,
+		//			Title:     title,
+		//			Content:   content,
+		//			Created:   time.Now(),
+		//			Updated:   time.Now(),
+		//			ReplyTime: time.Now()}
+		topic.Id = tid
+		topic.Title = title
+		topic.Content = content
+		topic.Created = time.Now()
+		topic.Updated = time.Now()
+		topic.ReplyTime = time.Now()
+		o.Update(topic)
+		return topic, err
+	}
+}
+
+//删除文章
+func ArticleDel(sid string) (*BeeTopic, error) {
+	tid, err := strconv.ParseInt(sid, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+	o := orm.NewOrm()
+	topic := new(BeeTopic)
+	o.Delete(&BeeTopic{Id: tid})
+	return topic, err
+}

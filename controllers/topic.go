@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"beeblog/models"
-	_ "fmt"
+	"fmt"
 	"github.com/astaxie/beego"
 )
 
@@ -40,14 +40,24 @@ func (this *TopicController) Post() {
 		this.Redirect("/login", 302)
 		return
 	}
+	id := this.GetString("tid")
 	title := this.Input().Get("title")
 	content := this.Input().Get("content")
 	var err error
-	err = models.AddTopic(title, content)
-	if err != nil {
-		beego.Error(err)
+	if len(id) > 0 {
+		_, err = models.UpdataTopic(id, title, content)
+		if err != nil {
+			beego.Error(err)
+		} else {
+			this.Redirect("/topic/views/"+id, 302)
+		}
+	} else {
+		err = models.AddTopic(title, content)
+		if err != nil {
+			beego.Error(err)
+		}
+		this.Redirect("/topic", 302)
 	}
-	this.Redirect("/topic", 302)
 
 }
 
@@ -69,4 +79,43 @@ func (this *TopicController) Views() {
 		return
 	}
 	this.TplName = "topic_view.html"
+}
+
+//修改文章
+func (this *TopicController) Edit() {
+	var err error
+	this.Data["titleString"] = "Article Edit- My Golang Blog"
+	tid := this.Input().Get("tid")
+	if len(tid) == 0 {
+		this.Redirect("/topic", 302)
+		return
+	}
+	this.Data["Islogin"] = checkAccount(this.Ctx)
+	this.Data["Topics"], err = models.EditTopics(tid)
+	if err != nil {
+		beego.Error(err)
+		this.Redirect("/topic", 302)
+		return
+	}
+	this.TplName = "topic_edit.html"
+}
+
+//删除文章
+func (this *TopicController) Delete() {
+	var err error
+	sid := this.Input().Get("tid")
+	if len(sid) == 0 {
+		this.Redirect("/topic", 302)
+		return
+	}
+	_, err = models.ArticleDel(sid)
+	if err != nil {
+		beego.Error(err)
+		this.Redirect("/topic", 302)
+		return
+	} else {
+		fmt.Println("删除成功！")
+		this.Redirect("/topic", 302)
+		return
+	}
 }
