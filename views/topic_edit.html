@@ -1,0 +1,47 @@
+{{template "header" .}}
+	<header id="top" class="navbar navbar-static-top bs-docs-nav" role="banner">
+			{{template "navbar" .}}
+	</header>
+	<body>
+		<div class="container">
+			<form method="post" action="/topic">
+			  <div class="form-group">
+			    <label>文章标题</label>
+			    <input type="text" name="title" value="{{.Topics.Title}}" class="form-control" >
+			  </div>
+			<div class="form-group">
+			    <label>文章内容</label>
+			    <textarea  name="content" value="{{.Topics.Content}}" class="form-control">{{.Topics.Content}}</textarea>
+			  </div>
+				<input type="hidden" name="tid" value="{{.Topics.Id}}">
+			  <button type="submit" class="btn btn-default">修改文章</button>
+			</form>
+			<!--<div class="table-responsive">
+			  <table class="table">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>名称</th>
+						<th>文章数</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+					{{range .Categories}}
+						<th>{{.Id}}</th>
+						<th>{{.Title}}</th>
+						<th>{{.TopicCount}}</th>
+						<th>
+							<a href="/category?action=del&id={{.Id}}">删除</a>
+						</th>
+					{{end}}
+					</tr>
+				</tbody>
+			 </table>
+			</div>-->
+		</div>
+	</body>
+	<footer>
+	</footer>
+</html>
