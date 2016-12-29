@@ -246,6 +246,18 @@ func GetReplays(tid string) ([]*BeeComment, error) {
 
 	return relays, err
 }
+
+/*删除文章中的留言*/
+func DeleteRepaly(rid string) (*BeeComment, error) {
+	var err error
+	nrid, err := changeId(rid)
+	o := orm.NewOrm()
+	replay := &BeeComment{
+		Id: nrid,
+	}
+	o.Delete(replay)
+	return replay, err
+}
 func changeId(id string) (nid int64, err error) {
 	hid, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
