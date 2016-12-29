@@ -65,10 +65,10 @@ func (this *TopicController) Post() {
 func (this *TopicController) Views() {
 	var err error
 	this.Data["titleString"] = "Article View- My Golang Blog"
-	if !checkAccount(this.Ctx) {
-		this.Redirect("/login", 302)
-		return
-	}
+	// if !checkAccount(this.Ctx) {
+	// 	this.Redirect("/login", 302)
+	// 	return
+	// }
 	this.Data["Islogin"] = checkAccount(this.Ctx)
 	//this.Ctx.WriteString(this.Ctx.Input.Param("0"))
 	//获取留言
