@@ -71,6 +71,8 @@ func (this *TopicController) Views() {
 	}
 	this.Data["Islogin"] = checkAccount(this.Ctx)
 	//this.Ctx.WriteString(this.Ctx.Input.Param("0"))
+	//获取留言
+	this.Data["Replays"], err = models.GetReplays(this.Ctx.Input.Param("0"))
 	this.Data["Topics"], err = models.GetTopic(this.Ctx.Input.Param("0"))
 
 	if err != nil {
