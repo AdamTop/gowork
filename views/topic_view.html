@@ -21,40 +21,49 @@
 			</p>	
 
 		</div>
+		{{$ntid := .Topics.Id}}
+		{{$islgon := .Islogin}}
+		{{if .Replays}}
 		<div class="panel panel-default">
 			<div class="panel-body">
-			评论区：
+				留言区：
 			</div>
 			{{range .Replays}}
-			<div class="panel-footer">
-			<h3><span>{{.Name}}</span><small style="margin:2.5%;">{{.Email}}</small></h3>
-			<h4><div class="is-visible"><p style="color: #468847;font-size: 16px;">{{.Content}}</p></div></h4>
+			<div class="panel-footer" style="margin-bottom: 15px;">
+				<h3><span>{{.Name}}</span><small style="margin:2.5%;">{{.Email}}</small> 
+					{{if  $islgon}}
+					<small style="float: right;"><a href="/replay/delete?rid={{.Id}}&tid={{$ntid}}">删除评论</a></small>
+					{{end}}
+				</h3>
+				<h4><div class="is-visible"><p style="color: #468847;font-size: 16px;">{{.Content}}</p></div></h4>
+				<small>{{.Created}}</small>
 			</div>
 			{{end}}
 		</div>
+		{{end}}
 		<div class="panel panel-default">
 			<div class="panel-body">
-			用户留言：
+				用户留言：
 			</div>
 			<div class="panel-footer">
-			<form role="form" method="post" action="/replay/add">
-				<input type="hidden" name="tid" value="{{.Topics.Id}}">
-				<div class="form-group">
-					<label for="messageUser">留言昵称</label>
-					<input class="form-control" id="messageUser" placeholder="留言昵称" name="name" type="name">
-				</div>
-				<div class="form-group">
-					<label for="exampleInputEmail1">Email</label>
-					<input class="form-control" id="exampleInputEmail1" placeholder="Enter email" name="email" type="email">
-				</div>
-				<div class="form-group">
-					<textarea class="form-control" rows="3" value="" placeholder="欢迎提交留言内容" name="content"></textarea>
-				</div>
-				<button type="submit" class="btn btn-default">提交留言</button>
-			</form>
+				<form role="form" method="post" action="/replay/add">
+					<input type="hidden" name="tid" value="{{.Topics.Id}}">
+					<div class="form-group">
+						<label for="messageUser">留言昵称</label>
+						<input class="form-control" id="messageUser" placeholder="留言昵称" name="name" type="name">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputEmail1">Email</label>
+						<input class="form-control" id="exampleInputEmail1" placeholder="Enter email" name="email" type="email">
+					</div>
+					<div class="form-group">
+						<textarea class="form-control" rows="3" value="" placeholder="欢迎提交留言内容" name="content"></textarea>
+					</div>
+					<button type="submit" class="btn btn-default">提交留言</button>
+				</form>
 			</div>
+		</div>
 	</div>
-</div>
 
 
 
