@@ -29,6 +29,7 @@ type BeeCategory struct {
 type BeeTopic struct {
 	Id               int64
 	Uid              int64
+	CateId           int64
 	Title            string
 	Content          string `orm:"size(5000)"`
 	Attachment       string
@@ -41,13 +42,23 @@ type BeeTopic struct {
 	RepleylastUserId int64
 }
 
+/*创建comment模型*/
+type BeeComment struct {
+	Id      int64
+	Tid     int64
+	Name    string
+	Content string `orm:"size(1000)"`
+	Email   string
+	Created time.Time `orm:"inedx"`
+}
+
 func RegisterDB() {
 	/*if !com.IsExist(_DB_NAME) {
 		os.MkdirAll(path.Dir(_DB_NAME), os.ModePerm)
 		os.Create(_DB_NAME)
 	}*/
 	/*注册模型*/
-	orm.RegisterModel(new(BeeCategory), new(BeeTopic))
+	orm.RegisterModel(new(BeeCategory), new(BeeTopic), new(BeeComment))
 	/*注册驱动*/
 	orm.RegisterDriver(_MYSQL_DRIVER, orm.DRMySQL)
 	/*默认数据库必须有个叫做default  数据库名称，数据库连接以及编码设置*/
@@ -201,4 +212,44 @@ func ArticleDel(sid string) (*BeeTopic, error) {
 	topic := new(BeeTopic)
 	o.Delete(&BeeTopic{Id: tid})
 	return topic, err
+}
+
+/*留言*/
+func Replayadd(tid, name, email, content string) (*BeeComment, error) {
+	o := orm.NewOrm()
+	newtid, err := changeId(tid)
+	replay := &BeeComment{
+		Tid:     newtid,
+		Name:    name,
+		Content: content,
+		Email:   email,
+		Created: time.Now(),
+	}
+	_, err = o.Insert(replay)
+	return nil, err
+
+}
+
+/*获取该文章下的所有留言*/
+func GetReplays(tid string) ([]*BeeComment, error) {
+	var err error
+	tidNum, err := changeId(tid)
+	o := orm.NewOrm()
+	relays := make([]*BeeComment, 0)
+	qs := o.QueryTable("BeeComment")
+	if len(tid) > 0 {
+		_, err = qs.Filter("tid", tidNum).All(&relays)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return relays, err
+}
+func changeId(id string) (nid int64, err error) {
+	hid, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		return 1, err
+	}
+	return hid, err
 }
