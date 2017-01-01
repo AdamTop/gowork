@@ -1,21 +1,28 @@
 {{template "header" .}}
-	<header id="top" class="navbar navbar-static-top bs-docs-nav" role="banner">
-			{{template "navbar" .}}
-	</header>
-	<body>
-		<div class="container">
-			<form method="post" action="/topic">
-			  <div class="form-group">
-			    <label>文章标题</label>
-			    <input type="text" name="title" value="" class="form-control"  placeholder="add title">
-			  </div>
+<header id="top" class="navbar navbar-static-top bs-docs-nav" role="banner">
+	{{template "navbar" .}}
+</header>
+<body>
+	<div class="container">
+		<form method="post" action="/topic">
 			<div class="form-group">
-			    <label>文章内容</label>
-			    <textarea  name="content" value="" class="form-control"  placeholder="add article content"></textarea>
-			  </div>
-				<input type="hidden" name="action" value="add">
-			  <button type="submit" class="btn btn-default">添加文章</button>
-			</form>
+				<label>文章标题</label>
+				<input type="text" name="title" value="" class="form-control"  placeholder="add title">
+			</div>
+			<div class="form-group">
+			<select class="form-control" name="CateId">
+			{{range .Categories}}
+				<option value="{{.Id}}">{{.Title}}</option>
+			{{end}}
+			</select>
+			</div>
+			<div class="form-group">
+				<label>文章内容</label>
+				<textarea  name="content" value="" class="form-control"  placeholder="add article content"></textarea>
+			</div>
+			<input type="hidden" name="action" value="add">
+			<button type="submit" class="btn btn-default">添加文章</button>
+		</form>
 			<!--<div class="table-responsive">
 			  <table class="table">
 				<thead>
@@ -44,4 +51,4 @@
 	</body>
 	<footer>
 	</footer>
-</html>
+	</html>

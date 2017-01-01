@@ -18,6 +18,7 @@ const (
 type BeeCategory struct {
 	Id              int64
 	Title           string
+	ParentId        int64
 	Created         time.Time `orm:"column(created);type(timestamp);auto_now_add"`
 	View            int64     `orm:"index"`
 	TopicTime       time.Time `orm:"column(topic_time);type(timestamp);auto_now_add"`
@@ -173,8 +174,9 @@ func EditTopics(sid string) (*BeeTopic, error) {
 }
 
 //修改文章
-func UpdataTopic(sid, title, content string) (*BeeTopic, error) {
+func UpdataTopic(sid, title, content, cate_id string) (*BeeTopic, error) {
 	tid, err := strconv.ParseInt(sid, 10, 64)
+	cateid, err := strconv.ParseInt(cate_id, 10, 64)
 	if err != nil {
 		return nil, err
 	}
@@ -194,6 +196,7 @@ func UpdataTopic(sid, title, content string) (*BeeTopic, error) {
 		topic.Id = tid
 		topic.Title = title
 		topic.Content = content
+		topic.CateId = cateid
 		topic.Created = time.Now()
 		topic.Updated = time.Now()
 		topic.ReplyTime = time.Now()

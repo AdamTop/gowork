@@ -30,6 +30,11 @@ func (this *TopicController) Get() {
 //自动化路由方法测试
 func (this *TopicController) Add() {
 	//this.Ctx.WriteString("add router")
+	var err error
+	this.Data["Categories"], err = models.GetAllCategory()
+	if err != nil {
+		beego.Error(err)
+	}
 	this.Data["titleString"] = "Article Add- My Golang Blog"
 	this.TplName = "topic_add.html"
 }
@@ -43,9 +48,10 @@ func (this *TopicController) Post() {
 	id := this.GetString("tid")
 	title := this.Input().Get("title")
 	content := this.Input().Get("content")
+	cateid := this.Input().Get("CateId")
 	var err error
 	if len(id) > 0 {
-		_, err = models.UpdataTopic(id, title, content)
+		_, err = models.UpdataTopic(id, title, content, cateid)
 		if err != nil {
 			beego.Error(err)
 		} else {
