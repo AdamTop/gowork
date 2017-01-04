@@ -17,7 +17,7 @@ func (this *TopicController) Get() {
 	case "edit":
 	}
 	var err error
-	this.Data["Topics"], err = models.GetAllTopic(false)
+	this.Data["Topics"], err = models.GetAllTopic(false, " ")
 	if err != nil {
 		beego.Error(err)
 	}
@@ -58,7 +58,7 @@ func (this *TopicController) Post() {
 			this.Redirect("/topic/views/"+id, 302)
 		}
 	} else {
-		err = models.AddTopic(title, content)
+		err = models.AddTopic(title, content, cateid)
 		if err != nil {
 			beego.Error(err)
 		}
