@@ -23,16 +23,18 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
+					
 					{{range .Categories}}
+					<tr>
 						<th>{{.Id}}</th>
 						<th>{{.Title}}</th>
 						<th>{{.TopicCount}}</th>
 						<th>
 							<a href="/category?action=del&id={{.Id}}">删除</a>
 						</th>
+						</tr>
 					{{end}}
-					</tr>
+					
 				</tbody>
 			 </table>
 			</div>

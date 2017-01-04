@@ -1,10 +1,11 @@
 {{template "header" .}}
-	<header id="top" class="navbar navbar-static-top bs-docs-nav" role="banner">
-			{{template "navbar" .}}
-	</header>
-	<body>
-		<div class="container">
-		{{range .Topics}}
+<header id="top" class="navbar navbar-static-top bs-docs-nav" role="banner">
+	{{template "navbar" .}}
+</header>
+<body>
+	<div class="container">
+		<div class="col-md-9" role="main">
+			{{range .Topics}}
 			<div class="page-header">
 				<h1><a href="/topic/views/{{.Id}}">{{.Title}}</a></h1>
 				<h6 class="text-muted">文章发表 {{.Created}}</h6>
@@ -15,7 +16,29 @@
 			</div>
 			{{end}}
 		</div>
+
+		<div class="col-md-3">
+			<div class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" role="complementary">
+				<ul class="nav bs-docs-sidenav">
+
+					<li class="active">
+					{{range .Categorys}}
+						<a href="/?cateid={{.Id}}">{{.Title}}</a>
+					{{end}}	
+						<!-- <ul class="nav">
+							<li><a href="#glyphicons-glyphs">所有可用的图标</a></li>
+							<li><a href="#glyphicons-how-to-use">如何使用</a></li>
+							<li><a href="#glyphicons-examples">实例</a></li>
+						</ul> -->
+					</li>
+
+				</ul>
+			</div>
+
+
+		</div>		
+
 	</body>
 	<footer>
 	</footer>
-</html>
+	</html>

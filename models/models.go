@@ -108,27 +108,38 @@ func DelCategory(id string) error {
 }
 
 //文章操作方法 -----------------------------------------
-func AddTopic(title, content string) error {
+func AddTopic(title, content, cate_id string) error {
 	o := orm.NewOrm()
+	cateid, err := strconv.ParseInt(cate_id, 10, 64)
+	if err != nil {
+		return err
+	}
 	topic := &BeeTopic{
 		Title:     title,
+		CateId:    cateid,
 		Content:   content,
 		Created:   time.Now(),
 		Updated:   time.Now(),
 		ReplyTime: time.Now(),
 	}
-	_, err := o.Insert(topic)
+	_, err = o.Insert(topic)
 	return err
 }
 
 //文章读取数据
-func GetAllTopic(IsHome bool) ([]*BeeTopic, error) {
+func GetAllTopic(IsHome bool, cateid string) ([]*BeeTopic, error) {
 	o := orm.NewOrm()
 	topics := make([]*BeeTopic, 0)
 	qs := o.QueryTable("bee_topic")
 	var err error
 	if IsHome {
-		_, err = qs.OrderBy("-created").All(&topics)
+		if len(cateid) > 0 && cateid != " " {
+			cid, _ := strconv.ParseInt(cateid, 10, 64)
+			_, err = qs.Filter("CateId", cid).OrderBy("-id").All(&topics)
+		} else {
+			_, err = qs.OrderBy("-created").All(&topics)
+		}
+
 	} else {
 		_, err = qs.All(&topics)
 	}
@@ -194,9 +205,9 @@ func UpdataTopic(sid, title, content, cate_id string) (*BeeTopic, error) {
 		//			Updated:   time.Now(),
 		//			ReplyTime: time.Now()}
 		topic.Id = tid
+		topic.CateId = cateid
 		topic.Title = title
 		topic.Content = content
-		topic.CateId = cateid
 		topic.Created = time.Now()
 		topic.Updated = time.Now()
 		topic.ReplyTime = time.Now()
